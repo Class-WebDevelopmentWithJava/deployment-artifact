@@ -20,109 +20,95 @@ class MemberRepositoryTest extends SpringBootDeveloperApplicationTest {
 
     @BeforeEach // 테스트 실행 전 실행하는 메서드
     public void BeforeCleanUp() {
-        memberRepository.deleteAll();
-        System.out.println(this.getClass().getName() + " 테이블 전부 delete");
+        System.out.println(this.getClass().getName() + " 테이블 전부 delete 시작");
+        memberRepository.deleteAll(); // select 쿼리 날린 후 Hibernate 내부에서 개별 삭제
+        System.out.println(this.getClass().getName() + " 테이블 전부 delete 완료");
     }
 
     @AfterEach // 테스트 실행 후 실행하는 메서드
     public void AfterCleanUp() {
-        memberRepository.deleteAll();
-        System.out.println(this.getClass().getName() + " 테이블 전부 delete");
+        System.out.println(this.getClass().getName() + " 테이블 전부 delete 시작");
+        memberRepository.deleteAll(); // select 쿼리 날린 후 Hibernate 내부에서 개별 삭제
+        System.out.println(this.getClass().getName() + " 테이블 전부 delete 완료");
     }
 
     // region CRUD
     @Test
-    @Transactional
     void create() {
+        Member entity = Member.builder() // 멤버 객체 생성
+                .name("abc")
+                .build();
 
-        try {
-            Member entity = Member.builder()
-                    .id(1L)
-                    .name("abc")
-                    .build();
+        Member newEntity = memberRepository.save(entity); // 새로운 객체 저장
+        
+        System.out.println("entity의 id값 : " + entity.getId()); // entity도 마찬가지로 영속상태로 등록
+        System.out.println("newEntity의 id값 : " + newEntity.getId()); // 영속성 컨텍스트에서 관리
+        System.out.println(entity == newEntity); // 결과값 true, 영속성 컨텍스트가 같은 엔티티는 같은 주소값을 반환
 
-            Member newEntity = memberRepository.save(entity);
-
-            assertThat(entity.getName()).isEqualTo(newEntity.getName());
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        assertThat(entity.getName()).isEqualTo(newEntity.getName()); // 이름만 비교해서 확인
     }
 
     @Test
-    @Transactional
+    // @Transactional
     void read() {
-
-        Long id = 1L;
         String name = "test";
 
-        try {
-            Member entity = Member.builder()
-                    .id(id)
-                    .name(name)
-                    .build();
+        Member entity = Member.builder() // 멤버 객체 생성
+                .name(name)
+                .build();
 
-            Member newEntity = memberRepository.save(entity);
+        Member newEntity = memberRepository.save(entity); // 영속상태로 등록되어 newEntity == entity는 같음
 
-            Optional<Member> selectedEntity = memberRepository.findById(id);
+        Member findEntity = memberRepository.findById(newEntity.getId()) // newEntity의 id값을 가지고 찾기
+                .orElseThrow(() -> new RuntimeException());
 
-            assertThat(selectedEntity.get()).isNotNull();
+        // 1차 캐시는 이미 조회한 데이터가 2번 조회되지 않도록 내부적으로 객체를 관리
+        System.out.println(newEntity == findEntity); // 같은 트랜잭션 안에서는 true, 다른 트랜잭션에서는 false
 
-            selectedEntity.ifPresent(e -> {
-                System.out.println("Result : " + e);
-            });
-
-            assertThat(entity.getId()).isEqualTo(newEntity.getId());
-            assertThat(entity.getName()).isEqualTo(newEntity.getName());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        assertThat(entity.getId()).isEqualTo(findEntity.getId());
+        assertThat(entity.getName()).isEqualTo(findEntity.getName());
     }
 
     @Test
-    @Transactional
+    // @Transactional // 한 트랜잭션으로 묶음
     void update() {
 
-        try {
+        String name = "test";
 
-            Optional<Member> maxRow = memberRepository.getFirstByOrderByIdDesc();
+        Member entity = Member.builder() // 객체 생성
+                .name(name)
+                .build();
 
-            Member entity = maxRow.get();
+        memberRepository.save(entity); // 객체를 저장
 
-            maxRow.ifPresent(perform -> {
-                entity.setName("change");
-            });
+        Member maxRow = memberRepository.getFirstByOrderByIdDesc()
+                .orElseThrow(() -> new RuntimeException("No member found")); // 하나의 트랜잭션 안에서 RuntimeException이 발생하면 rollback;
 
-            Member newEntity = memberRepository.save(entity);
+        maxRow.setName("change");
+        memberRepository.save(maxRow); // save를 통해 update, 만약에 하나의 트랜잭션으로 묶으면 save 호출 필요 없음
+        // JPA에서 컬렉션에서 꺼내쓰는 것처럼 구현했기때문에 같은 트랜잭션 내에서는 save를 하지 않아도 자동 저장
 
-            assertThat(entity.getId()).isEqualTo(newEntity.getId());
-            assertThat(entity.getName()).isEqualTo(newEntity.getName());
+        assertThat(maxRow.getName()).isEqualTo("change");
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
-    @Transactional
     void delete() {
-        Optional<Long> before = memberRepository.countBy();
-        Long beforeCount = before.get();
+        long beforeCount = memberRepository.count(); // 0개
 
-        try {
-            Optional<Member> maxRow = memberRepository.getFirstByOrderByIdDesc();
+        Member entity = Member.builder()
+                .name("delete test")
+                .build();
 
-            memberRepository.delete(maxRow.get());
+        memberRepository.save(entity); // 객체 저장
 
-            Optional<Long> after = memberRepository.countBy();
-            Long afterCount = after.get();
+        Optional<Member> maxRow = memberRepository.getFirstByOrderByIdDesc(); // 마지막에 저장한 것을 조회
 
-            assertThat(afterCount + 1L).isEqualTo(beforeCount);
+        maxRow.ifPresent(memberRepository::delete); // 해당 조회가 성공했으면 해당 객체를 삭제
 
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        long afterCount = memberRepository.count(); // 0개
+
+        assertThat(afterCount).isEqualTo(beforeCount); // 0개 == 0개, true
+
     }
 }
