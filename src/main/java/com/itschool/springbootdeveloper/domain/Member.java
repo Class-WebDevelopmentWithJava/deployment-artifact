@@ -1,10 +1,7 @@
 package com.itschool.springbootdeveloper.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본생성자, (JPA 지연로딩) 프록시 조회 접근을 위해 protected 또는 public 
 @AllArgsConstructor // 모든 필드를 파라미터로 가진 생성자
@@ -16,6 +13,8 @@ import lombok.NoArgsConstructor;
 // 엔티티 매니저 : 엔티티 매니저는 엔티티를 관리해 데이터베이스와 어플리케이션 사이에서 객체를 생성, 수정, 삭제하는 등의 역할을 함
 // 엔티티 매니저는 Spring Data JPA에서 관리하므로 직접 생성하거나 관리할 필요가 없음
 // 엔티티 매니저 팩토리 : 엔티티 매니저를 생성, 어플리케이션 내에서 단 하나만 존재
+@Builder
+@Setter
 public class Member {
     @Id // id 필드를 기본키로 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 생성을 데이터베이스에 위임
