@@ -47,6 +47,7 @@ dependencies {
     // validation(유효성 검사), actuator(모니터링용)
 }
 
+// Gradle에서 JUnit 5 (JUnit Jupiter) 테스트를 실행하도록 설정하는 코드
 test {
     useJUnitPlatform()
 }
