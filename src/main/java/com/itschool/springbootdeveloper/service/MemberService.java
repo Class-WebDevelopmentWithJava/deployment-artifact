@@ -1,25 +1,70 @@
 package com.itschool.springbootdeveloper.service;
 
 import com.itschool.springbootdeveloper.domain.Member;
+import com.itschool.springbootdeveloper.network.request.MemberRequest;
+import com.itschool.springbootdeveloper.network.response.MemberResponse;
 import com.itschool.springbootdeveloper.repository.MemberRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 // Service 계층 : 비즈니스 로직 처리와 비즈니스 관련된 도메인 모델의 적합성 검증
 // 트랜잰션 관리 및 처리
 @Service
+@RequiredArgsConstructor
 public class MemberService {
     
     // Service 계층 <-> Persistence 계층
-    @Autowired // 빈 주입
-    MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
+
+    public MemberResponse response(Member member) {
+        return new MemberResponse(member);
+    }
+
+    public List<MemberResponse> responseList(List<Member> articleList) {
+        return articleList.stream()
+                .map(MemberResponse::new)
+                .toList();
+    }
+
+    // 블로그 글 추가 메서드
+    // DTO : Data Transfer Object
+    public MemberResponse create(MemberRequest request) { // 영속성 계층 객체, request 객체
+        return response(memberRepository.save(request.toEntity())); // response 객체
+    }
+
+    public MemberResponse read(Long id) {
+        return response(memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("id로 해당 객체 못 찾음")));
+    }
+
+    public List<MemberResponse> readAll() {
+        return responseList(memberRepository.findAll());
+    }
+
+    @Transactional
+    public MemberResponse update(Long id, MemberRequest request) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("id로 해당 객체 못 찾음"));
+
+        member.update(request); // 변경된 이후 dirty checking
+
+        // memberRepository.save()를 호출해야 하지 않나? @Transactional으로 하나의 트랜잭션으로 메서드 리턴되기 전에 commit() 호출(update 쿼리)
+        // return response(memberRepository.save(member));
+
+        return response(member);
+    }
+
+    public void delete(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("id로 해당 객체 못 찾음"));
+
+        memberRepository.deleteById(id);
+    }
     
-    public List<Member> getAllMembers() {
+    /*public List<Member> getAllMembers() {
         return memberRepository.findAll(); // 멤버 목록 얻기
     }
 
@@ -50,5 +95,5 @@ public class MemberService {
         
         // 3. 삭제
         memberRepository.deleteById(1L);
-    }
+    }*/
 }
