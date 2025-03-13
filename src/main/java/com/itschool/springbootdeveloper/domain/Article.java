@@ -1,5 +1,6 @@
 package com.itschool.springbootdeveloper.domain;
 
+import com.itschool.springbootdeveloper.domain.base.BaseEntity;
 import com.itschool.springbootdeveloper.network.request.ArticleRequest;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +11,7 @@ import lombok.*;
 @Setter
 @Builder
 @Entity
-public class Article {
+public class Article extends BaseEntity<ArticleRequest> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)

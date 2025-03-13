@@ -13,6 +13,6 @@ public class MemberResponse {
 
     public MemberResponse(Member member) {
         this.id = member.getId();
-        this.name = getName();
+        this.name = member.getName();
     }
 }

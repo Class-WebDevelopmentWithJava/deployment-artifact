@@ -1,5 +1,7 @@
 package com.itschool.springbootdeveloper.domain;
 
+import com.itschool.springbootdeveloper.domain.base.BaseEntity;
+import com.itschool.springbootdeveloper.network.request.ArticleRequest;
 import com.itschool.springbootdeveloper.network.request.MemberRequest;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +18,7 @@ import lombok.*;
 // 엔티티 매니저 : 엔티티 매니저는 엔티티를 관리해 데이터베이스와 어플리케이션 사이에서 객체를 생성, 수정, 삭제하는 등의 역할을 함
 // 엔티티 매니저는 Spring Data JPA에서 관리하므로 직접 생성하거나 관리할 필요가 없음
 // 엔티티 매니저 팩토리 : 엔티티 매니저를 생성, 어플리케이션 내에서 단 하나만 존재
-public class Member {
+public class Member extends BaseEntity<MemberRequest> {
     @Id // id 필드를 기본키로 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 생성을 데이터베이스에 위임
     // AUTO: 선택한 데이터베이스 방언(dialect)에 따라 방식을 자동으로 선택(기본값). 참고로 postgres는 auto를 하면 sequence 생성 방식
