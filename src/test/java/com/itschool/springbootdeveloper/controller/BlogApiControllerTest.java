@@ -198,10 +198,11 @@ class BlogApiControllerTest extends MockMvcTest {
         final ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.APPLICATION_JSON));
 
         // then : 결과 검증
+        Long index = memberRepository.count() - 1;
 
         result.andExpect(MockMvcResultMatchers.status().isOk()) // 응답이 OK(200) 코드인지 확인
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value(title))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].content").value(content));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[" + index + "].title").value(title))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[" + index + "].content").value(content));
 
         assertThat(blogRepository.findAll().size()).isEqualTo(1);
     }

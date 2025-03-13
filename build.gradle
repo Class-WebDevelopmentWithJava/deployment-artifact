@@ -18,33 +18,13 @@ repositories {
 
 // 프로젝를 개발하며 필요한 의존성을 관리
 dependencies {
-    // spring-boot-starter는 의존성이 모여이는 그룹(패키지), 필요한 기능을 간편하게 설정
-    // 스타터는 spring-boot-starter-{작업유형}이라는 명명 규칙 존재
-    
-    // Spring MVC를 사용해서 RESTful 웹 서비스를 개발할 때 필요한 의존성 모음
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    
-    // 스프링 애플리케이션을 테스트하기 위해 필요한 의존성 모음
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    // 스프링 데이터 JPA, ORM(Object-Relational Mapping)
-    // 자바의 객체와 데이터베이스를 연결하는 프로그래밍 기법
-    // 컨셉 : 자바의 컬렉션에 넣고 꺼내는 것처럼 객체지향적으로 개발할 수 있음
-    // ORM을 쓰면 데이터베이스 엔티티를 마치 객체처럼 사용할 수 있고, SQL을 몰라도 Java코드로 DB 연결 및 쿼리 가능
-    // 장점 1 : SQL을 직접 작성하지 않고 사용하는 언어로 데이터베이스 접근 가능
-    // 장점 2 : 객체 지향적으로 코드를 작성할 수 있어 비즈니스 로직에 집중할 수 있음
-    // 장점 3 : 데이터베이스 시스템이 추상화 되어있어 DB 변경 시 마이그레이션 비용이 적음
-    // 장점 4 : 매핑하는 정보가 명확하고 ERD에 대한 의존도를 낮출 수 있음
-    // 단점 : 프로젝트의 복잡성 커질 수록 사용 난이도도 증가, 복잡하고 무거운 쿼리는 ORM 해결 불가능한 경우도 있음
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     runtimeOnly 'com.h2database:h2' // 인메모리 데이터베이스
-    
     compileOnly 'org.projectlombok:lombok' // 롬복
     annotationProcessor 'org.projectlombok:lombok'
-
-    // 이외에도 자주 사용하는 스타터 : data-jpa(ORM, JPA를 더 쉽게 사용하기위한 의존성,
-    // validation(유효성 검사), actuator(모니터링용)
 }
 
 // Gradle에서 JUnit 5 (JUnit Jupiter) 테스트를 실행하도록 설정하는 코드

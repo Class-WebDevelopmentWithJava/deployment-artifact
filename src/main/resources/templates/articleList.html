@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>블로그 글 목록</title>
+    <!-- 부트스트랩 4를 추가 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+<body>
+<!-- 페이지 헤더 -->
+<!-- p-5 : padding을 설정 여기서 5 값으로 BootStrap 스케일에 따라 큰 패딩을 적용 (위, 아래, 왼쪽, 오른쪽) -->
+<!-- mb-5 : margin-bottom을 설정 여기서 5는 값으로 하단에 큰 마진을 추가, 요소와 요소 사이에 공간을 만들어줌 -->
+<!-- bg-light : background-light 배경색을 밝은 색으로 설정. Bootstrap에서 제공하는 밝은 배경 색상 중 하나를 적용 -->
+<div class="p-5 mb-5 text-center bg-light">
+    <h1 class="mb-3">My Blog</h1>
+    <h4 class="mb-3">블로그에 오신 것을 환영합니다.</h4>
+</div>
+
+<!-- 페이지 바디 -->
+<div class="container">
+    <!-- 사용자가 새로운 글을 등록할 수 있는 버튼 -->
+    <!-- 기본적인 버튼 타입으로, 클릭시 폼 제출을 하지 않음, 고유한 ID 부여하여 JavaScript에서 id로 참조 가능 -->
+    <!-- th:onclick은 Thymeleaf에서 사용하는 속성으로 버튼을 클릭했을 때 /new-article 경로로 이동하도록 설정 -->
+    <!-- location.href : 페이지를 이동시키는 JavaScript 코드 -->
+    <button type="button" id="create-btn"
+            th:onclick="|location.href='@{/new-article}'|"
+            class="btn btn-secondary btn-sm mb-3">글 등록</button>
+
+    <!-- 블로그 글 목록을 반복하여 출력 -->
+    <div class="row-6" th:each="item : ${articles}"> <!-- 그리드 관련해서 row는 6칸을 차지, articles 리스트의 각 항목을 반복 -->
+        <div class="card"> <!-- 3개의 카드가 가로로 나란히 배치되도록 설정 -->
+            <div class="card-header" th:text="${item.id}"> <!-- card-header : 카드의 상 단부분을 정의, 글 ID 표시 -->
+            </div>
+            <div class="card-body"> <!-- card-body : 카드의 주요 내용을 담고 있음 카드의 주된 기능 -->
+                <h5 class="card-title" th:text="${item.title}"></h5> <!-- card-title, 카드의 제목을 정의한 클래스, 글 제목 표시 -->
+                <p class="card-text" th:text="${item.content}"></p> <!-- card-text : 카드 안의 일반 텍스트 콘텐츠를 표시하는 클래스, 글 내용 표시 -->
+                <a th:href="@{/articles/{id}(id=${item.id})}" class="btn btn-primary">보러가기</a> <!-- 블로그 글 링크 -->
+            </div>
+        </div>
+        <br>
+    </div>
+    <button type="button" class="btn btn-secondary" onclick="location.href='/logout'">로그아웃</button>
+</div>
+
+<script src="/js/article.js"></script>
+</body>
