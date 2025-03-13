@@ -18,7 +18,7 @@ public class MemberApiControllerTest extends MockMvcTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @BeforeEach // 테스트 실행 전 실행하는 메서드
+    /*@BeforeEach // 테스트 실행 전 실행하는 메서드
     public void BeforeCleanUp() {
         memberRepository.deleteAll();
         System.out.println(this.getClass().getName() + " 테이블 전부 delete");
@@ -28,7 +28,7 @@ public class MemberApiControllerTest extends MockMvcTest {
     public void AfterCleanUp() {
         memberRepository.deleteAll();
         System.out.println(this.getClass().getName() + " 테이블 전부 delete");
-    }
+    }*/
     
     @DisplayName("getAllMembers: 멤버 전체 조회에 성공한다.")
     @Test
@@ -52,9 +52,11 @@ public class MemberApiControllerTest extends MockMvcTest {
         // then : 결과 검증
         System.out.println("then(결과 검증) 시작");
 
+        Long index = memberRepository.count() - 1;
+
         result.andExpect(MockMvcResultMatchers.status().isOk()) // 응답이 OK(200) 코드인지 확인
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(savedMember.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(savedMember.getName()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[" + index + "].id").value(savedMember.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[" + index + "].name").value(savedMember.getName()));
         // JsonPath("$[0].${필드명}")은 JSON 응답값을 가져오는 메서드 : 0번째 배열에 들어있는 객체의 필드를 가져와라
 
         System.out.println("then(결과 검증) 끝");
