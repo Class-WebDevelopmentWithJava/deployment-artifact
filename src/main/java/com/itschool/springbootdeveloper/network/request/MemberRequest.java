@@ -1,14 +1,17 @@
 package com.itschool.springbootdeveloper.network.request;
 
 import com.itschool.springbootdeveloper.domain.Member;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @ToString
 public class MemberRequest {
+
+    private Long id;
+
     private String name;
 
     public Member toEntity() {

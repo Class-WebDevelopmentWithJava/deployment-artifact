@@ -4,7 +4,7 @@ import com.itschool.springbootdeveloper.controller.base.CrudController;
 import com.itschool.springbootdeveloper.domain.Member;
 import com.itschool.springbootdeveloper.network.request.MemberRequest;
 import com.itschool.springbootdeveloper.network.response.MemberResponse;
-import com.itschool.springbootdeveloper.service.base.CrudService;
+import com.itschool.springbootdeveloper.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/member")
 public class MemberApiController extends CrudController<MemberRequest, MemberResponse, Member> {
     @Autowired
-    public MemberApiController(CrudService<MemberRequest, MemberResponse, Member> baseService) { // MemberService
+    public MemberApiController(MemberService baseService) { // MemberService
         super(baseService);
+    }
+
+    @Override
+    protected MemberService getBaseService() {
+        return (MemberService) baseService;
     }
 }

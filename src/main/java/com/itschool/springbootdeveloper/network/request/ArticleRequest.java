@@ -1,23 +1,28 @@
 package com.itschool.springbootdeveloper.network.request;
 
 import com.itschool.springbootdeveloper.domain.Article;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.itschool.springbootdeveloper.domain.Member;
+import lombok.*;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @ToString
+@Builder
 public class ArticleRequest {
+
+    private Long id;
 
     private String title;
 
     private String content;
 
-    public Article toEntity() {
+    private MemberRequest author;
+
+    /*public Article toEntity() {
         return Article.builder()
                 .title(title)
                 .content(content)
                 .build();
-    }
+    }*/
 }

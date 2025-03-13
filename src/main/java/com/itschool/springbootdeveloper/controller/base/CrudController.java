@@ -20,6 +20,8 @@ public abstract class CrudController <Req, Res, Entity extends BaseEntity>  impl
 
     protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    protected abstract CrudService<Req, Res, Entity> getBaseService();
+
     @PostMapping("")
     public ResponseEntity<Res> create(@RequestBody Req request) {
         log.info("create: {}에서 객체 {} 생성 요청", this.getClass().getSimpleName(), request);

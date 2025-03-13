@@ -23,6 +23,8 @@ public abstract class CrudService <Req, Res, Entity extends BaseEntity> implemen
     // 엔티티를 응답으로 변경
     protected abstract Res response(Entity entity);
 
+    protected abstract JpaRepository<Entity, Long> getBaseRepository();
+
     // 엔티티 리스트를 응답 리스트로 변경
     public List<Res> responseList(List<Entity> articleList) {
         return articleList.stream()

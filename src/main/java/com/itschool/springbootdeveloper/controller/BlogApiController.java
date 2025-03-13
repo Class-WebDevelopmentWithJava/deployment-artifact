@@ -4,7 +4,7 @@ import com.itschool.springbootdeveloper.controller.base.CrudController;
 import com.itschool.springbootdeveloper.domain.Article;
 import com.itschool.springbootdeveloper.network.request.ArticleRequest;
 import com.itschool.springbootdeveloper.network.response.ArticleResponse;
-import com.itschool.springbootdeveloper.service.base.CrudService;
+import com.itschool.springbootdeveloper.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/articles")
 public class BlogApiController extends CrudController<ArticleRequest, ArticleResponse, Article> {
     @Autowired
-    public BlogApiController(CrudService<ArticleRequest, ArticleResponse, Article> baseService) { // BlogService
+    public BlogApiController(BlogService baseService) { // BlogService
         super(baseService);
+    }
+
+    protected BlogService getBaseService() {
+        return (BlogService) baseService;
     }
 }

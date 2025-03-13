@@ -23,6 +23,10 @@ public class Article extends BaseEntity<ArticleRequest> {
     @Column(nullable = false) // NOT NULL
     private String content;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false) // NOT NULL, 게시글에는 무조건 작성자가 있어야 한다.
+    private Member author;
+
     public void update(ArticleRequest request) {
         this.title = request.getTitle();
         this.content = request.getContent();
