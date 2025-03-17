@@ -17,7 +17,7 @@ public class JUnitTest {
         assertThat(a+b).isEqualTo(sum);
     }
 
-    @DisplayName("1 + 3는 3이다")
+    /*@DisplayName("1 + 3는 3이다")
     @Test
     public void junitFailedTest() {
         int a = 1;
@@ -25,5 +25,5 @@ public class JUnitTest {
         int sum = 3;
 
         assertThat(a+b).isEqualTo(sum);
-    }
+    }*/
 }

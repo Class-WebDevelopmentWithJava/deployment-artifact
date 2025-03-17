@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>블로그 글</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+<body>
+<!-- 페이지 헤더 -->
+<div class="p-5 mb-5 text-center bg-light">
+    <h1 class="mb-3">My Blog</h1>
+    <h4 class="mb-3">블로그에 오신 것을 환영합니다.</h4>
+</div>
+
+<!-- 페이지 바디 -->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <article>
+                <!-- 블로그 글 id 추가 -->
+                <input type="hidden" id="article-id" th:value="${article.id}">
+                <!-- 글 제목과 작성일을 표시하는 헤더 부분 -->
+                <header class="mb-4">
+                    <!-- 글 제목: Thymeleaf의 th:text 속성을 사용하여 서버에서 전달된 제목 데이터 바인딩 -->
+                    <h1 class="fw-bolder mb-1" th:text="${article.title}"></h1>
+                    <!-- 글 작성일: Thymeleaf의 #temporals.format을 이용하여 날짜 형식으로 표시 -->
+                    <!--|(vertical bar, 파이프 기호) Thymeleaf에서 문자열 템플릿 사용할 때-->
+                    <div class="text-muted fst-italic mb-2" th:text="|Posted on
+                        ${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}|"></div>
+                </header>
+                <!-- 글 본문을 표시하는 섹션 -->
+                <section class="mb-5">
+                    <!-- 글 내용: 서버에서 전달된 글 내용을 Thymeleaf로 바인딩하여 표시 -->
+                    <p class="fs-5 mb-4" th:text="${article.content}"></p>
+                </section>
+                <!-- 수정, 삭제 버튼 -->
+                <button type='button' id="modify-btn" class="btn btn-primary btn-sm"
+                        th:onClick="|location.href = '@{/new-article?id={articleId} (articleId=${article.id})}'|">수정</button>
+                <button type="button" id="delete-btn" class="btn btn-secondary btn-sm">삭제</button>
+            </article>
+        </div>
+    </div>
+</div>
+<script src="/js/article.js"></script>
+</body>
