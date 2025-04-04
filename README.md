@@ -1,9 +1,13 @@
-# GitHub에서 프로젝트 클론
-# git clone <GitHub_레포지토리_URL> <저장할경로>
-# .은 현재 경로
-git clone https://github.com/Class-WebDevelopmentWithJava/deployment-artifact.git /home/ec2-user/app/project
+## GitHub에서 프로젝트 클론
+### git clone <GitHub_레포지토리_URL> <저장할경로>
+#### .은 현재 경로
+<br>
 
-`
+```git clone https://github.com/Class-WebDevelopmentWithJava/deployment-artifact.git /home/ec2-user/app/project```
+
+<br>
+
+```
 #!/bin/bash
 
 REPOSITORY=/home/ec2-user/app/
@@ -46,4 +50,4 @@ JAR_NAME=$(ls $REPOSITORY/ |grep 'TableQ' | tail -n 1)
 echo "> JAR Name: $JAR_NAME"
 
 sudo nohup java -Xms128m -Xmx256m -jar $REPOSITORY/$JAR_NAME --server.port=8080 &
-`
+```
