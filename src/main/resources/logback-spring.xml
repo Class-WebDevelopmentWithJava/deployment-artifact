@@ -44,7 +44,7 @@
             <file>../logs/application.log</file>  <!-- prod용 로그 파일 경로 -->
             <append>true</append>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>../logs/prod/application.log.%d{yyyy-MM-dd}.%i.log</fileNamePattern> <!-- 날짜 + 인덱스 -->
+                <fileNamePattern>../logs/application.log.%d{yyyy-MM-dd}.%i.log</fileNamePattern> <!-- 날짜 + 인덱스 -->
                 <maxHistory>30</maxHistory>  <!-- 최대 30일 동안의 로그 보관 -->
                 <totalSizeCap>20GB</totalSizeCap>  <!-- 로그 파일의 총 크기 20GB로 제한 -->
                 <maxFileSize>500MB</maxFileSize>  <!-- 각 파일의 최대 크기 500MB -->
