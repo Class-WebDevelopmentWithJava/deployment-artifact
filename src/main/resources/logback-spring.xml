@@ -26,6 +26,7 @@
         <!-- 루트 로거 설정 -->
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
         </root>
 
         <!-- 특정 패키지 로거 설정 -->
