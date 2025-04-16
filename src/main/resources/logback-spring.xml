@@ -41,7 +41,7 @@
     <!-- prod 프로필 설정 (별도 설정) -->
     <springProfile name="prod">
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>../logs/prod/application.log</file>  <!-- prod용 로그 파일 경로 -->
+            <file>../logs/application.log</file>  <!-- prod용 로그 파일 경로 -->
             <append>true</append>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
                 <fileNamePattern>../logs/prod/application.log.%d{yyyy-MM-dd}.%i.log</fileNamePattern> <!-- 날짜 + 인덱스 -->
